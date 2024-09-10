@@ -6,10 +6,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class BankDto(
-    @SerialName("city") val city: String,
-    @SerialName("name") val name: String,
-    @SerialName("phone") val phone: String,
-    @SerialName("url") val url: String
+    @SerialName("city") val city: String = "",
+    @SerialName("name") val name: String = "",
+    @SerialName("phone") val phone: String = "",
+    @SerialName("url") val url: String = ""
 )
 
 fun BankDto.toDomain(): Bank {

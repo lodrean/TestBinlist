@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NumberDto(
-    @SerialName("length") val length: Int,
-    @SerialName("luhn") val luhn: Boolean
+    @SerialName("length") val length: Int = 0,
+    @SerialName("luhn") val luhn: Boolean = false
 )
 
 fun NumberDto.toDomain() = Number(length, luhn)

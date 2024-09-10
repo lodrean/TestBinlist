@@ -9,16 +9,16 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class HistoryViewModel(private val dataBaseRepository: DataBaseRepository) : ViewModel() {
-    private val historyList = MutableStateFlow<List<CardInfo>>(emptyList())
+    private val _historyList = MutableStateFlow<List<CardInfo>>(emptyList())
 
     fun getHistoryList(): StateFlow<List<CardInfo>> {
-        return historyList
+        return _historyList
     }
 
     init {
         viewModelScope.launch {
             dataBaseRepository.getHistory().collect {
-                historyList.value = it
+                _historyList.value = it
             }
         }
     }

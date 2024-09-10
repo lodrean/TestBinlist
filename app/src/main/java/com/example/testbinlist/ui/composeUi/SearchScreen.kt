@@ -1,7 +1,7 @@
 package com.example.testbinlist.ui.composeUi
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -11,20 +11,24 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.testbinlist.domain.CardInfo
 import com.example.testbinlist.viewmodels.SearchViewModel
+import org.koin.androidx.compose.koinViewModel
+
 
 @Composable
-fun SearchScteen(searchViewModel: SearchViewModel = viewModel()) {
+fun SearchScreen(viewModel: SearchViewModel = koinViewModel<SearchViewModel>()) {
+    val card by viewModel.cardInfo.collectAsState()
     Column() {
         val cardNumber = remember { mutableStateOf("") }
-        val card by searchViewModel.cardInfo.collectAsState()
+
         OutlinedTextField(
-            value = "text",
+            value = cardNumber.value,
             onValueChange = { cardNumber.value = it },
             label = { Text("Введите номер карты") },
         )
-        searchViewModel.getCardInfo(cardNumber.value)
+        Button(
+            onClick = { viewModel.getCardInfo(cardNumber.value) },
+            content = { Text("Получить информацию") })
         BankInfoCard(card)
     }
 }
@@ -32,5 +36,5 @@ fun SearchScteen(searchViewModel: SearchViewModel = viewModel()) {
 @Preview
 @Composable
 fun SearchScteenPreview() {
-    SearchScteen(viewModel())
+    SearchScreen(viewModel())
 }

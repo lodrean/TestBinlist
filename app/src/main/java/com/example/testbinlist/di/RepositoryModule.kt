@@ -1,36 +1,12 @@
 package com.example.testbinlist.di
 
+import com.example.testbinlist.data.SearchRepositoryImpl
+import com.example.testbinlist.domain.SearchRepository
 import org.koin.dsl.module
 
 val repositoryModule = module {
-/*
-    single<VacanciesRepository> {
-        VacanciesRepositoryImpl(
-            context = get(),
-            networkClient = get(),
-        )
-    }
 
-    single<DictionariesRepository> {
-        DictionariesRepositoryImpl(
-            context = get(),
-            networkClient = get(),
-        )
+    factory<SearchRepository> {
+        SearchRepositoryImpl(get())
     }
-
-    single<FavoritesRepository> {
-        FavoritesRepositoryImpl(
-            database = get(),
-        )
-    }
-
-    single<SharingRepository> {
-        SharingRepositoryImpl(get(), get())
-    }
-
-    single<FilterRepository> {
-        FilterRepostoryImpl(
-            context = get(),
-        )
-    }*/
 }
