@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.example.testbinlist.domain.CardInfo
 
 @Composable
-fun BankInfoCard(cardNumber: String, card: CardInfo) {
+fun BankInfoCard(card: CardInfo) {
     Column(
     ) {
         ElevatedCard(
@@ -44,7 +44,7 @@ fun BankInfoCard(cardNumber: String, card: CardInfo) {
                 horizontalArrangement = Arrangement.SpaceEvenly,
             ) {
                 Column() {
-                    CardNumber(cardNumber = cardNumber)
+                    CardNumber(cardNumber = card.cardNumber)
                     CountryInfo(
                         country = card.country.name,
                         latitude = card.country.latitude.toString(),
@@ -99,21 +99,6 @@ private fun CountryInfo(country: String?, latitude: String?, longitude: String?)
             )
         }
     }
-}
-
-@Composable
-private fun CoordinateInfo(country: String?) {
-    Row {
-        Text(
-            text = "Country: ", style = MaterialTheme.typography.bodySmall
-        )
-        Text(
-            text = country ?: "",
-            modifier = Modifier.clickable { },
-            style = MaterialTheme.typography.bodySmall
-        )
-    }
-
 }
 
 @Composable
@@ -206,5 +191,5 @@ private fun Brand(brand: String) {
 @Preview
 @Composable
 private fun BankInfoCardPreview() {
-    BankInfoCard("", CardInfo())
+    BankInfoCard(CardInfo())
 }
