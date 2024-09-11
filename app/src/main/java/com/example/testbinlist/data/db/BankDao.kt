@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface BankDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertBank(bank: BankDb)
+    suspend fun insertBank(bank: BankDb?)
 
     @Delete
     suspend fun deleteBank(bank: BankDb)
