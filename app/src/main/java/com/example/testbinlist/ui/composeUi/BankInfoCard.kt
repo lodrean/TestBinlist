@@ -50,17 +50,21 @@ fun BankInfoCard(cardNumber: String, card: CardInfo) {
             ) {
                 Column() {
                     CardNumber(cardNumber = cardNumber)
-                    CountryInfo(country = card.country?.name)
-                    BankInfo(bankName = card.bank?.name)
+                    CountryInfo(
+                        country = card.country?.name,
+                        latitude = card.country?.latitude.toString(),
+                        longitude = card.country?.longitude.toString()
+                    )
+                    CardType(type = card.type)
                 }
 
                 Column() {
+                    BankInfo(bankName = card.bank?.name)
                     PhoneInfo(phone = card.bank?.phone)
                     CityInfo(city = card.bank?.city)
-                    CardType(type = card.type)
+                    BankUrl(bankUrl = card.bank?.url)
                 }
             }
-
 
         }
     }
@@ -68,7 +72,47 @@ fun BankInfoCard(cardNumber: String, card: CardInfo) {
 }
 
 @Composable
-private fun CountryInfo(country: String?) {
+private fun CountryInfo(country: String?, latitude: String?, longitude: String?) {
+    Column() {
+        Row {
+            Text(
+                text = "Country: ",
+                style = MaterialTheme.typography.bodySmall
+            )
+            Text(
+                text = country ?: "",
+                modifier = Modifier
+                    .clickable { },
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
+        Row {
+            Text(
+                text = "(latitude: ",
+                style = MaterialTheme.typography.bodySmall
+            )
+            Text(
+                text = if (latitude != null) "$latitude ," else "",
+                modifier = Modifier
+                    .clickable { },
+                style = MaterialTheme.typography.bodySmall
+            )
+            Text(
+                text = "longitude: ",
+                style = MaterialTheme.typography.bodySmall
+            )
+            Text(
+                text = if (longitude != null) "$longitude)" else ")",
+                modifier = Modifier
+                    .clickable { },
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
+    }
+}
+
+@Composable
+private fun CoordinateInfo(country: String?) {
     Row {
         Text(
             text = "Country: ",
@@ -96,6 +140,7 @@ private fun CardNumber(cardNumber: String) {
             style = MaterialTheme.typography.bodySmall
         )
     }
+
 }
 
 @Composable
@@ -107,6 +152,21 @@ private fun BankInfo(bankName: String?) {
         )
         Text(
             text = bankName ?: "",
+            style = MaterialTheme.typography.bodySmall
+        )
+    }
+}
+
+
+@Composable
+private fun BankUrl(bankUrl: String?) {
+    Row() {
+        Text(
+            text = "Сайт: ",
+            style = MaterialTheme.typography.bodySmall
+        )
+        Text(
+            text = bankUrl ?: "",
             style = MaterialTheme.typography.bodySmall
         )
     }

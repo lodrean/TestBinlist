@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface BankDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertBank(bank: BankDb)
+    suspend fun insertBank(bank: BankDb?)
 
     @Delete
     suspend fun deleteBank(bank: BankDb)
@@ -19,5 +19,5 @@ interface BankDao {
     fun getAll(): Flow<List<BankDb>>
 
     @Query("SELECT name FROM banks")
-    fun getAllBankNames(): List<String>
+    suspend fun getAllBankNames(): List<String>
 }

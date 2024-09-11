@@ -1,5 +1,7 @@
 package com.example.testbinlist.di
 
+import androidx.room.Room
+import com.example.testbinlist.BinListAppDatabase
 import com.example.testbinlist.data.network.KtorNetworkClient
 import com.example.testbinlist.data.network.NetworkClient
 import io.ktor.client.HttpClient
@@ -10,6 +12,9 @@ import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.logging.SIMPLE
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.json.Json
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -36,5 +41,14 @@ val dataModule = module {
     }
     single<NetworkClient> {
         KtorNetworkClient(get(), androidContext())
+    }
+    single<BinListAppDatabase> {
+        Room.databaseBuilder(
+            androidContext(),
+            BinListAppDatabase::class.java,
+            "card-database"
+        )
+            .setQueryCoroutineContext(Dispatchers.IO + CoroutineName("Room coroutine"))
+            .build()
     }
 }

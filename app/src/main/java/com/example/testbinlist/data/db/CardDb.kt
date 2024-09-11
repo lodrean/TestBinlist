@@ -3,24 +3,18 @@ package com.example.testbinlist.data.db
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.testbinlist.domain.Bank
-import com.example.testbinlist.domain.Country
 
 @Entity (tableName = "Cards")
-class CardDb (
+class CardDb(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "cardId")
     val id: Int,
-    @ColumnInfo(name = "bankId")
-    val bankId: Int,
+    @ColumnInfo(name = "bankName")
+    val bankName: String?,
     @ColumnInfo(name = "brand")
     val brand: String,
-    @ColumnInfo(name = "countryId")
-    val countryId: String,
-    @ColumnInfo(name = "numberId")
-    val numberId: Int,
-    @ColumnInfo(name = "prepaid")
-    val prepaid: Boolean = false,
+    @ColumnInfo(name = "countryName")
+    val countryName: String?,
     @ColumnInfo(name = "scheme")
     val scheme: String,
     @ColumnInfo(name = "type")
