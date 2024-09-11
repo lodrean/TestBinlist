@@ -8,16 +8,16 @@ import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface CardDao {
+interface BankDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCard(card: CardDb)
+    suspend fun insertBank(bank: BankDb)
 
     @Delete
-    suspend fun deleteCard(card: CardDb)
+    suspend fun deleteBank(bank: BankDb)
 
-    @Query("SELECT * FROM cards")
-    fun getAll(): Flow<List<CardDb>>
+    @Query("SELECT * FROM banks")
+    fun getAll(): Flow<List<BankDb>>
 
-    @Query("SELECT cardId FROM cards")
-    fun getAllIds(): List<Int>
+    @Query("SELECT name FROM banks")
+    fun getAllBankNames(): List<String>
 }

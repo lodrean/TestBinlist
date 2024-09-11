@@ -9,11 +9,10 @@ class CardDto(
     @SerialName("bank") val bank: BankDto,
     @SerialName("brand") val brand: String = "",
     @SerialName("country") val country: CountryDto,
-    @SerialName("number") val number: NumberDto,
     @SerialName("prepaid") val prepaid: Boolean = false,
     @SerialName("scheme") val scheme: String ="",
     @SerialName("type") val type: String = "",
 )
 
 fun CardDto.toDomain() =
-    CardInfo(bank.toDomain(), brand, country.toDomain(), number.toDomain(), prepaid, scheme, type)
+    CardInfo(bank.toDomain(), brand, country.toDomain(), prepaid, scheme, type)

@@ -25,5 +25,5 @@ class MainActivity : ComponentActivity() {
 @Preview
 @Composable
 private fun BankInfoCardPreview() {
-    BankInfoCard(CardInfo())
+    SearchScreen()
 }

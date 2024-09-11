@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.http.HttpException
+import android.util.Log
 import com.example.testbinlist.data.dto.CardDto
 import com.example.testbinlist.data.dto.toDomain
 import com.example.testbinlist.domain.CardInfo
@@ -31,7 +32,7 @@ class KtorNetworkClient(
 
     override suspend fun doRequest(id: String): CardInfo {
         return withContext(Dispatchers.IO) {
-            apiClient.get("id").body<CardDto>().toDomain()
+            apiClient.get(id).body<CardDto>().toDomain()
         }
     }
     /*return apiClient.get("id")*/
