@@ -10,11 +10,10 @@ data class CardInfo(
     ),
     val brand: String = "",
     val country: Country = Country(
+        "",
         0,
-        0,
-        ""
+        0
     ),
-    val prepaid: Boolean = false,
     val scheme: String = "",
     val type: String = ""
 )

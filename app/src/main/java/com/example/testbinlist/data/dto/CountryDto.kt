@@ -11,4 +11,4 @@ data class CountryDto(
     @SerialName("name") val name: String = "",
 )
 
-fun CountryDto.toDomain() = Country(latitude, longitude, name)
+fun CountryDto.toDomain() = Country(name, latitude, longitude)

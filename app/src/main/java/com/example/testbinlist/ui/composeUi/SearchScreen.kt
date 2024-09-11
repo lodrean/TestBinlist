@@ -67,7 +67,7 @@ fun SearchScreen(viewModel: SearchViewModel = koinViewModel<SearchViewModel>()) 
                 )
             },
             content = { Text("Получить информацию") })
-        BankInfoCard(creditCardText.value.text, card)
+        BankInfoCard(card)
     }
 }
 
@@ -149,6 +149,6 @@ fun SearchScreenPreview() {
         Button(modifier = Modifier.padding(top = 12.dp, bottom = 12.dp, start = 12.dp, end = 12.dp),
             onClick = {},
             content = { Text("Получить информацию") })
-        BankInfoCard(creditCardText.value.text, CardInfo())
+        BankInfoCard(CardInfo())
     }
 }
