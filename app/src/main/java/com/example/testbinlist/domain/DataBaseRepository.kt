@@ -4,6 +4,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface DataBaseRepository {
     suspend fun getHistory(): Flow<List<CardInfo>>
-
-
+    suspend fun putCardIntoDb(cardInfo: CardInfo)
 }

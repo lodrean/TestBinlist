@@ -19,5 +19,5 @@ interface BankDao {
     fun getAll(): Flow<List<BankDb>>
 
     @Query("SELECT name FROM banks")
-    fun getAllBankNames(): List<String>
+    suspend fun getAllBankNames(): List<String>
 }

@@ -2,10 +2,7 @@ package com.example.testbinlist.ui.composeUi
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
@@ -27,7 +24,6 @@ import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.testbinlist.domain.CardInfo
 import com.example.testbinlist.viewmodels.SearchViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -50,8 +46,7 @@ fun SearchScreen(viewModel: SearchViewModel = koinViewModel<SearchViewModel>()) 
 
         OutlinedTextField(
             isError = creditCardText.value.text.length < 6,
-            modifier = Modifier
-                .width(300.dp),
+            modifier = Modifier.width(300.dp),
             value = creditCardText.value,
             label = { Text("Номер карты") },
             placeholder = { Text(text = "Введите от 6 до 8 знаков") },
@@ -65,7 +60,7 @@ fun SearchScreen(viewModel: SearchViewModel = koinViewModel<SearchViewModel>()) 
             maxLines = 1,
             visualTransformation = CreditCardVisualTransformation()
         )
-        Button(
+        Button(modifier = Modifier.padding(top = 12.dp, bottom = 12.dp, start = 12.dp, end = 12.dp),
             onClick = {
                 if (creditCardText.value.text.length > 5) viewModel.getCardInfo(
                     creditCardText.value.text
@@ -73,46 +68,6 @@ fun SearchScreen(viewModel: SearchViewModel = koinViewModel<SearchViewModel>()) 
             },
             content = { Text("Получить информацию") })
         BankInfoCard(creditCardText.value.text, card)
-    }
-}
-
-@Preview
-@Composable
-fun SearchScreenPreview() {
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = androidx.compose.ui.graphics.Color.LightGray)
-            .padding(top = 48.dp, bottom = 12.dp, start = 12.dp, end = 12.dp)
-    ) {
-        val creditCardText = remember { mutableStateOf(TextFieldValue("")) }
-        val maxCharCreditCard = 16
-        // this for entering number only
-        val numberRegex = "^[0-9]+\$".toRegex()
-
-        OutlinedTextField(
-            isError = creditCardText.value.text.length < 6,
-            value = creditCardText.value,
-            label = { Text("Credit Card") },
-            placeholder = { Text(text = "") },
-            onValueChange = { newValue ->
-                val text = newValue.text
-                if (text.length <= maxCharCreditCard && numberRegex.matches(text)) {
-                    creditCardText.value = newValue
-                }
-            },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            maxLines = 1,
-            visualTransformation = CreditCardVisualTransformation()
-        )
-        Button(
-            onClick = { },
-            content = { Text("Получить информацию") })
-        BankInfoCard(creditCardText.value.text, CardInfo())
-
-
     }
 }
 
@@ -156,4 +111,44 @@ fun creditCardFilter(text: AnnotatedString): TransformedText {
     }
 
     return TransformedText(AnnotatedString(out), creditCardOffsetTranslator)
+}
+
+
+@Preview
+@Composable
+fun SearchScreenPreview() {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = androidx.compose.ui.graphics.Color.LightGray)
+            .padding(top = 48.dp, bottom = 12.dp, start = 12.dp, end = 12.dp)
+            .padding(top = 48.dp, bottom = 12.dp, start = 12.dp, end = 12.dp)
+    ) {
+        val creditCardText = remember { mutableStateOf(TextFieldValue("")) }
+        val maxCharCreditCard = 8
+        // this for entering number only
+        val numberRegex = "^[0-9]+\$".toRegex()
+
+        OutlinedTextField(
+            isError = creditCardText.value.text.length < 6,
+            modifier = Modifier.width(300.dp),
+            value = creditCardText.value,
+            label = { Text("Номер карты") },
+            placeholder = { Text(text = "Введите от 6 до 8 знаков") },
+            onValueChange = { newValue ->
+                val text = newValue.text
+                if ((text.length <= maxCharCreditCard && numberRegex.matches(text)) or (text.isEmpty())) {
+                    creditCardText.value = newValue
+                }
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            maxLines = 1,
+            visualTransformation = CreditCardVisualTransformation()
+        )
+        Button(modifier = Modifier.padding(top = 12.dp, bottom = 12.dp, start = 12.dp, end = 12.dp),
+            onClick = {},
+            content = { Text("Получить информацию") })
+        BankInfoCard(creditCardText.value.text, CardInfo())
+    }
 }

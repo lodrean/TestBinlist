@@ -4,10 +4,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
@@ -15,8 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.BaselineShift
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,8 +31,7 @@ fun BankInfoCard(cardNumber: String, card: CardInfo) {
             ) {
             Text(
                 text = "Bank Info Card",
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyMedium
             )
@@ -50,17 +45,22 @@ fun BankInfoCard(cardNumber: String, card: CardInfo) {
             ) {
                 Column() {
                     CardNumber(cardNumber = cardNumber)
-                    CountryInfo(country = card.country?.name)
-                    BankInfo(bankName = card.bank?.name)
+                    CountryInfo(
+                        country = card.country.name,
+                        latitude = card.country.latitude.toString(),
+                        longitude = card.country.longitude.toString()
+                    )
+                    CardType(type = card.type)
+                    Brand(brand = card.brand)
                 }
 
                 Column() {
-                    PhoneInfo(phone = card.bank?.phone)
-                    CityInfo(city = card.bank?.city)
-                    CardType(type = card.type)
+                    BankInfo(bankName = card.bank.name)
+                    PhoneInfo(phone = card.bank.phone)
+                    CityInfo(city = card.bank.city)
+                    BankUrl(bankUrl = card.bank.url)
                 }
             }
-
 
         }
     }
@@ -68,16 +68,48 @@ fun BankInfoCard(cardNumber: String, card: CardInfo) {
 }
 
 @Composable
-private fun CountryInfo(country: String?) {
+private fun CountryInfo(country: String?, latitude: String?, longitude: String?) {
+    Column() {
+        Row {
+            Text(
+                text = "Country: ", style = MaterialTheme.typography.bodySmall
+            )
+            Text(
+                text = country ?: "",
+                modifier = Modifier.clickable { },
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
+        Row {
+            Text(
+                text = "(latitude: ", style = MaterialTheme.typography.bodySmall
+            )
+            Text(
+                text = if (latitude != null) "$latitude ," else "",
+                modifier = Modifier.clickable { },
+                style = MaterialTheme.typography.bodySmall
+            )
+            Text(
+                text = "longitude: ", style = MaterialTheme.typography.bodySmall
+            )
+            Text(
+                text = if (longitude != null) "$longitude)" else ")",
+                modifier = Modifier.clickable { },
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
+    }
+}
+
+@Composable
+private fun CoordinateInfo(country: String?) {
     Row {
         Text(
-            text = "Country: ",
-            style = MaterialTheme.typography.bodySmall
+            text = "Country: ", style = MaterialTheme.typography.bodySmall
         )
         Text(
             text = country ?: "",
-            modifier = Modifier
-                .clickable { },
+            modifier = Modifier.clickable { },
             style = MaterialTheme.typography.bodySmall
         )
     }
@@ -88,26 +120,36 @@ private fun CountryInfo(country: String?) {
 private fun CardNumber(cardNumber: String) {
     Row {
         Text(
-            text = "Card Number: ",
-            style = MaterialTheme.typography.bodySmall
+            text = "Card Number: ", style = MaterialTheme.typography.bodySmall
         )
         Text(
-            text = cardNumber,
-            style = MaterialTheme.typography.bodySmall
+            text = cardNumber, style = MaterialTheme.typography.bodySmall
         )
     }
+
 }
 
 @Composable
 private fun BankInfo(bankName: String?) {
     Row() {
         Text(
-            text = "Bank: ",
-            style = MaterialTheme.typography.bodySmall
+            text = "Bank: ", style = MaterialTheme.typography.bodySmall
         )
         Text(
-            text = bankName ?: "",
-            style = MaterialTheme.typography.bodySmall
+            text = bankName ?: "", style = MaterialTheme.typography.bodySmall
+        )
+    }
+}
+
+
+@Composable
+private fun BankUrl(bankUrl: String?) {
+    Row() {
+        Text(
+            text = "Сайт: ", style = MaterialTheme.typography.bodySmall
+        )
+        Text(
+            text = bankUrl ?: "", style = MaterialTheme.typography.bodySmall
         )
     }
 }
@@ -116,12 +158,10 @@ private fun BankInfo(bankName: String?) {
 private fun PhoneInfo(phone: String?) {
     Row() {
         Text(
-            text = "Телефон: ",
-            style = MaterialTheme.typography.bodySmall
+            text = "Телефон: ", style = MaterialTheme.typography.bodySmall
         )
         Text(
-            text = phone ?: "",
-            style = MaterialTheme.typography.bodySmall
+            text = phone ?: "", style = MaterialTheme.typography.bodySmall
         )
     }
 }
@@ -131,12 +171,10 @@ private fun PhoneInfo(phone: String?) {
 private fun CityInfo(city: String?) {
     Row() {
         Text(
-            text = "Город: ",
-            style = MaterialTheme.typography.bodySmall
+            text = "Город: ", style = MaterialTheme.typography.bodySmall
         )
         Text(
-            text = city ?: "",
-            style = MaterialTheme.typography.bodySmall
+            text = city ?: "", style = MaterialTheme.typography.bodySmall
         )
     }
 }
@@ -145,16 +183,25 @@ private fun CityInfo(city: String?) {
 private fun CardType(type: String) {
     Row() {
         Text(
-            text = "Тип карты: ",
-            style = MaterialTheme.typography.bodySmall
+            text = "Тип карты: ", style = MaterialTheme.typography.bodySmall
         )
         Text(
-            text = type ?: "",
-            style = MaterialTheme.typography.bodySmall
+            text = type, style = MaterialTheme.typography.bodySmall
         )
     }
 }
 
+@Composable
+private fun Brand(brand: String) {
+    Row() {
+        Text(
+            text = "Brand: ", style = MaterialTheme.typography.bodySmall
+        )
+        Text(
+            text = brand, style = MaterialTheme.typography.bodySmall
+        )
+    }
+}
 
 @Preview
 @Composable

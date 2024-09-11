@@ -22,8 +22,4 @@ class SearchRepositoryImpl(private val networkClient: NetworkClient) : SearchRep
     private fun saveBankToDB() {
         //ToDo
     }
-
-    private fun saveNumberToDB() {
-        //ToDo
-    }
 }

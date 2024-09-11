@@ -6,8 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.testbinlist.domain.CardInfo
-import com.example.testbinlist.ui.composeUi.BankInfoCard
 import com.example.testbinlist.ui.composeUi.SearchScreen
 import com.example.testbinlist.ui.theme.TestBinlistTheme
 
@@ -22,6 +20,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 @Preview
 @Composable
 private fun BankInfoCardPreview() {

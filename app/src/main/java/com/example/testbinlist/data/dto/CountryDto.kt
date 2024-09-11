@@ -12,7 +12,7 @@ data class CountryDto(
     @SerialName("latitude") val latitude: Int = 0,
     @SerialName("longitude") val longitude: Int = 0,
     @SerialName("name") val name: String = "",
-    @SerialName("numeric") val numeric: String= ""
+    @SerialName("numeric") val numeric: String = ""
 )
 
 fun CountryDto.toDomain() = Country(alpha2, currency, emoji, latitude, longitude, name, numeric)
