@@ -3,16 +3,13 @@ package com.example.testbinlist.data.network
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.net.http.HttpException
-import android.util.Log
 import com.example.testbinlist.data.dto.CardDto
 import com.example.testbinlist.data.dto.toDomain
 import com.example.testbinlist.domain.CardInfo
+import com.example.testbinlist.util.ApiOperation
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 class KtorNetworkClient(
     private val apiClient: HttpClient,
@@ -30,9 +27,9 @@ class KtorNetworkClient(
         }id
     }*/
 
-    override suspend fun doRequest(id: String): CardInfo {
-        return withContext(Dispatchers.IO) {
-            apiClient.get(id).body<CardDto>().toDomain()
+    override suspend fun doRequest(id: String): ApiOperation<CardInfo> {
+        return safeApiCall {
+                apiClient.get(id).body<CardDto>().toDomain()
         }
     }
     /*return apiClient.get("id")*/
@@ -83,5 +80,13 @@ class KtorNetworkClient(
             }
         }
         return false
+    }
+
+    private inline fun <T> safeApiCall(apiCall: () -> T): ApiOperation<T> {
+        return try {
+            ApiOperation.Success(data = apiCall())
+        } catch (e: Exception) {
+            ApiOperation.Failure(exception = e)
+        }
     }
 }

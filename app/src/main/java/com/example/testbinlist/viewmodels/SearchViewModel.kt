@@ -18,11 +18,11 @@ class SearchViewModel(
     fun getCardInfo(value: String) {
         viewModelScope.launch {
             getCardInfoUseCase.execute(value).collect {
-                _cardInfo.value = it.copy(cardNumber = value)
-                if (it.country.name.isNotEmpty()) {
+                _cardInfo.value = it.first.copy(cardNumber = value)
+                dataBase.putCardIntoDb(it.first)
+                if (it.first.country.name.isNotEmpty()) {
                     dataBase.putCardIntoDb(_cardInfo.value)
                 }
-
             }
         }
     }
