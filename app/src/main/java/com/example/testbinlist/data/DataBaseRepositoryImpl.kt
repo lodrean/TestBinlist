@@ -1,6 +1,9 @@
-package com.example.testbinlist.data.db
+package com.example.testbinlist.data
 
 import com.example.testbinlist.BinListAppDatabase
+import com.example.testbinlist.data.db.BankDb
+import com.example.testbinlist.data.db.CardDb
+import com.example.testbinlist.data.db.CountryDb
 import com.example.testbinlist.domain.Bank
 import com.example.testbinlist.domain.CardInfo
 import com.example.testbinlist.domain.Country
@@ -11,7 +14,7 @@ import kotlinx.coroutines.flow.map
 
 class DataBaseRepositoryImpl(private val database: BinListAppDatabase) : DataBaseRepository {
     override suspend fun getHistory(): Flow<List<CardInfo>> = flow {
-        database.cardDao().getAll().map {
+        database.cardDao().getAll().map { it ->
             it.map {
                 val bankDb = database.bankDao().findBankByName(it.bankName)
                 val countryDb = database.countryDao().findCountryByName(it.countryName)
@@ -21,15 +24,22 @@ class DataBaseRepositoryImpl(private val database: BinListAppDatabase) : DataBas
     }
 
     override suspend fun putCardIntoDb(cardInfo: CardInfo) {
-        if (!isBankInDb(cardInfo.bank.name)) {
+        if (!isBankInDb(cardInfo.bank.name) && cardInfo.bank.name.isNotBlank()) {
             val bank = cardInfo.bank
             database.bankDao().insertBank(bank.toBankDb())
         }
-        if (!isCountryInDb(cardInfo.country.name)) {
+        if (!isCountryInDb(cardInfo.country.name) && cardInfo.country.name.isNotBlank()) {
             val country = cardInfo.country
             database.countryDao().insertCountry(country.toCountryDb())
         }
-        database.cardDao().insertCard(cardInfo.toCardDb())
+        if (!isCardInDb(cardInfo) && cardInfo.cardNumber.isNotBlank()) {
+            database.cardDao().insertCard(cardInfo.toCardDb())
+        }
+    }
+
+    private suspend fun isCardInDb(cardInfo: CardInfo): Boolean {
+        val cards = database.cardDao().getAllNumbers()
+        return cardInfo.cardNumber in cards
     }
 
     private suspend fun isBankInDb(bankName: String?): Boolean {

@@ -38,12 +38,16 @@ val dataModule = module {
             }
         }
     }
+
     single<NetworkClient> {
         KtorNetworkClient(get(), androidContext())
     }
+
     single<BinListAppDatabase> {
         Room.databaseBuilder(
             androidContext(), BinListAppDatabase::class.java, "card-database"
-        ).setQueryCoroutineContext(Dispatchers.IO + CoroutineName("Room coroutine")).build()
+        )
+            .setQueryCoroutineContext(Dispatchers.IO + CoroutineName("Room coroutine"))
+            .build()
     }
 }

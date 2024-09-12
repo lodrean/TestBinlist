@@ -1,7 +1,7 @@
 package com.example.testbinlist.di
 
 import com.example.testbinlist.data.SearchRepositoryImpl
-import com.example.testbinlist.data.db.DataBaseRepositoryImpl
+import com.example.testbinlist.data.DataBaseRepositoryImpl
 import com.example.testbinlist.domain.DataBaseRepository
 import com.example.testbinlist.domain.SearchRepository
 import org.koin.dsl.module

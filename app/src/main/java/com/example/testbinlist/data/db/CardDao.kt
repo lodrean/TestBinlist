@@ -18,6 +18,6 @@ interface CardDao {
     @Query("SELECT * FROM cards")
     fun getAll(): Flow<List<CardDb>>
 
-    @Query("SELECT cardId FROM cards")
-    fun getAllIds(): List<Int>
+    @Query("SELECT cardNumber FROM cards")
+    suspend fun getAllNumbers(): List<String>
 }
