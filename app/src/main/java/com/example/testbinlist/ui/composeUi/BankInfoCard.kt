@@ -1,5 +1,6 @@
 package com.example.testbinlist.ui.composeUi
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,18 +18,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.testbinlist.domain.CardInfo
+import com.example.testbinlist.ui.theme.Pink
 
 @Composable
 fun BankInfoCard(card: CardInfo) {
-    Column(
+    ElevatedCard(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 6.dp
+        ),
     ) {
-        ElevatedCard(
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 6.dp
-            ),
-            modifier = Modifier.align(alignment = Alignment.Start),
-
-            ) {
+        Column(
+            modifier = Modifier.background(color = Pink)
+        ) {
             Text(
                 text = "Bank Info Card",
                 modifier = Modifier.fillMaxWidth(),
@@ -61,10 +62,8 @@ fun BankInfoCard(card: CardInfo) {
                     BankUrl(bankUrl = card.bank.url)
                 }
             }
-
         }
     }
-
 }
 
 @Composable

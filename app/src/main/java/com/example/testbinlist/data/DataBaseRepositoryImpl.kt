@@ -14,11 +14,11 @@ import kotlinx.coroutines.flow.map
 
 class DataBaseRepositoryImpl(private val database: BinListAppDatabase) : DataBaseRepository {
     override suspend fun getHistory(): Flow<List<CardInfo>> = flow {
-        database.cardDao().getAll().map { it ->
-            it.map {
-                val bankDb = database.bankDao().findBankByName(it.bankName)
-                val countryDb = database.countryDao().findCountryByName(it.countryName)
-                it.toCardInfo(bankDb, countryDb)
+        database.cardDao().getAll().map {
+            it.map { cardDb ->
+                val bankDb = database.bankDao().findBankByName(cardDb.bankName)
+                val countryDb = database.countryDao().findCountryByName(cardDb.countryName)
+                cardDb.toCardInfo(bankDb, countryDb)
             }
         }
     }

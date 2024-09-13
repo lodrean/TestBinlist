@@ -25,6 +25,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.testbinlist.domain.CardInfo
+import com.example.testbinlist.ui.theme.PurpleGrey80
 import com.example.testbinlist.viewmodels.SearchViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -36,7 +37,7 @@ fun SearchScreen(viewModel: SearchViewModel = koinViewModel<SearchViewModel>()) 
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
-            .background(color = androidx.compose.ui.graphics.Color.LightGray)
+            .background(color = PurpleGrey80 )
             .padding(top = 48.dp, bottom = 12.dp, start = 12.dp, end = 12.dp)
     ) {
         val creditCardText = remember { mutableStateOf(TextFieldValue("")) }
