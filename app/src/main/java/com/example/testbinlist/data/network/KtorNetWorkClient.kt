@@ -29,9 +29,12 @@ class KtorNetworkClient(
 
     override suspend fun doRequest(id: String): ApiOperation<CardInfo> {
         return safeApiCall {
-                apiClient.get(id).body<CardDto>().toDomain()
+            apiClient.get(id).body<CardDto>()
+        }.mapSuccess {
+            it.toDomain(id)
         }
     }
+
     /*return apiClient.get("id")*/
 
     /*private suspend fun getVacancies(request: VacanciesSearchRequest): Response {

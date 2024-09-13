@@ -1,5 +1,6 @@
 package com.example.testbinlist.ui.composeUi
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.OffsetMapping
@@ -27,19 +29,21 @@ import androidx.compose.ui.unit.dp
 import com.example.testbinlist.domain.CardInfo
 import com.example.testbinlist.ui.theme.PurpleGrey80
 import com.example.testbinlist.viewmodels.SearchViewModel
+import com.example.testbinlist.viewmodels.SearchViewState
 import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
 fun SearchScreen(viewModel: SearchViewModel = koinViewModel<SearchViewModel>()) {
-    val card by viewModel.cardInfo.collectAsState()
+    val state by viewModel.stateFlow.collectAsState()
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
-            .background(color = PurpleGrey80 )
+            .background(color = PurpleGrey80)
             .padding(top = 48.dp, bottom = 12.dp, start = 12.dp, end = 12.dp)
     ) {
+
         val creditCardText = remember { mutableStateOf(TextFieldValue("")) }
         val maxCharCreditCard = 8
         // this for entering number only
@@ -63,14 +67,37 @@ fun SearchScreen(viewModel: SearchViewModel = koinViewModel<SearchViewModel>()) 
         )
         Button(modifier = Modifier.padding(top = 12.dp, bottom = 12.dp, start = 12.dp, end = 12.dp),
             onClick = {
-                if (creditCardText.value.text.length > 5) viewModel.getCardInfo(
+                if (creditCardText.value.text.length > 5) viewModel.fetchCardInfo(
                     creditCardText.value.text
                 )
             },
             content = { Text("Получить информацию") })
-        BankInfoCard(card)
+
+
+
+        when {
+            (state.cardInfo != CardInfo()) -> {
+                BankInfoCard (state.cardInfo)
+            }
+            state.isLoading -> LoadingState()
+            state.errorMessage != null ->{
+                ShowSingleToastEvent(state)
+                viewModel.userMessageShown()
+            }
+        }
+
     }
 }
+
+@Composable
+private fun ShowSingleToastEvent(state: SearchViewState) {
+    Toast.makeText(
+        LocalContext.current,
+        state.errorMessage,
+        Toast.LENGTH_SHORT
+    ).show()
+}
+
 
 class CreditCardVisualTransformation : VisualTransformation {
     override fun filter(text: AnnotatedString): TransformedText {
@@ -152,4 +179,5 @@ fun SearchScreenPreview() {
             content = { Text("Получить информацию") })
         BankInfoCard(CardInfo())
     }
+
 }

@@ -13,5 +13,5 @@ class CardDto(
     @SerialName("type") val type: String = "",
 )
 
-fun CardDto.toDomain() =
-    CardInfo("", bank.toDomain(), brand, country.toDomain(), scheme, type)
+fun CardDto.toDomain(id: String) =
+    CardInfo(id, bank.toDomain(), brand, country.toDomain(), scheme, type)

@@ -6,24 +6,51 @@ import com.example.testbinlist.domain.CardInfo
 import com.example.testbinlist.domain.DataBaseRepository
 import com.example.testbinlist.domain.GetCardInfoUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
     private val getCardInfoUseCase: GetCardInfoUseCase, private val dataBase: DataBaseRepository
 ) : ViewModel() {
-    private val _cardInfo = MutableStateFlow(CardInfo())
-    val cardInfo: StateFlow<CardInfo> = _cardInfo
+    private var currentCardInfo = CardInfo()
+    private val _internalStorageFlow =
+        MutableStateFlow(
+            value = SearchViewState(
+                isLoading = false,
+                cardInfo = currentCardInfo,
+                errorMessage = null
+            )
+        )
+    val stateFlow = _internalStorageFlow.asStateFlow()
 
-    fun getCardInfo(value: String) {
+    fun fetchCardInfo(value: String) {
         viewModelScope.launch {
-            getCardInfoUseCase.execute(value).collect {
-                _cardInfo.value = it.first.copy(cardNumber = value)
-                dataBase.putCardIntoDb(it.first)
-                if (it.first.country.name.isNotEmpty()) {
-                    dataBase.putCardIntoDb(_cardInfo.value)
+            _internalStorageFlow.update { it.copy(isLoading = true) }
+            getCardInfoUseCase.execute(value).collect { (cardInfo, errorMessage) ->
+                currentCardInfo = cardInfo
+                if (cardInfo.country.name.isNotEmpty()) {
+                    dataBase.putCardIntoDb(cardInfo)
+                    _internalStorageFlow.update {
+                        it.copy(isLoading = false, cardInfo = currentCardInfo, errorMessage = null)
+                    }
+                } else {
+                    _internalStorageFlow.updateAndGet {
+                        it.copy(
+                            isLoading = false,
+                            cardInfo = CardInfo(),
+                            errorMessage = errorMessage
+                        )
+                    }
                 }
             }
+
         }
+
+    }
+
+    fun userMessageShown() {
+        _internalStorageFlow.value = _internalStorageFlow.value.copy(errorMessage = null)
     }
 }
