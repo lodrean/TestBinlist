@@ -1,7 +1,6 @@
 package com.example.testbinlist.ui.composeUi
 
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -27,7 +26,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.testbinlist.domain.CardInfo
-import com.example.testbinlist.ui.theme.PurpleGrey80
 import com.example.testbinlist.viewmodels.SearchViewModel
 import com.example.testbinlist.viewmodels.SearchViewState
 import org.koin.androidx.compose.koinViewModel
@@ -35,20 +33,22 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SearchScreen(viewModel: SearchViewModel = koinViewModel<SearchViewModel>()) {
+
     val state by viewModel.stateFlow.collectAsState()
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
-            .background(color = PurpleGrey80)
-            .padding(top = 48.dp, bottom = 12.dp, start = 12.dp, end = 12.dp)
+            .padding( bottom = 12.dp)
+
     ) {
 
-        val creditCardText = remember { mutableStateOf(TextFieldValue("")) }
+        val creditCardText = remember { mutableStateOf(TextFieldValue()) }
         val maxCharCreditCard = 8
         // this for entering number only
         val numberRegex = "^[0-9]+\$".toRegex()
-
+        SimpleToolBar("Поиск")
         OutlinedTextField(
             isError = creditCardText.value.text.length < 6,
             modifier = Modifier.width(300.dp),
@@ -65,22 +65,23 @@ fun SearchScreen(viewModel: SearchViewModel = koinViewModel<SearchViewModel>()) 
             maxLines = 1,
             visualTransformation = CreditCardVisualTransformation()
         )
-        Button(modifier = Modifier.padding(top = 12.dp, bottom = 12.dp, start = 12.dp, end = 12.dp),
-            onClick = {
-                if (creditCardText.value.text.length > 5) viewModel.fetchCardInfo(
-                    creditCardText.value.text
-                )
-            },
-            content = { Text("Получить информацию") })
+        Button(modifier = Modifier.padding(
+            top = 12.dp, bottom = 12.dp, start = 12.dp, end = 12.dp
+        ), onClick = {
+            if (creditCardText.value.text.length > 5) viewModel.fetchCardInfo(
+                creditCardText.value.text
+            )
+        }, content = { Text("Получить информацию") })
 
 
 
         when {
             (state.cardInfo != CardInfo()) -> {
-                BankInfoCard (state.cardInfo)
+                BankInfoCard(state.cardInfo)
             }
+
             state.isLoading -> LoadingState()
-            state.errorMessage != null ->{
+            state.errorMessage != null -> {
                 ShowSingleToastEvent(state)
                 viewModel.userMessageShown()
             }
@@ -89,12 +90,11 @@ fun SearchScreen(viewModel: SearchViewModel = koinViewModel<SearchViewModel>()) 
     }
 }
 
+
 @Composable
 private fun ShowSingleToastEvent(state: SearchViewState) {
     Toast.makeText(
-        LocalContext.current,
-        state.errorMessage,
-        Toast.LENGTH_SHORT
+        LocalContext.current, state.errorMessage, Toast.LENGTH_SHORT
     ).show()
 }
 
@@ -149,7 +149,6 @@ fun SearchScreenPreview() {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
-            .background(color = androidx.compose.ui.graphics.Color.LightGray)
             .padding(top = 48.dp, bottom = 12.dp, start = 12.dp, end = 12.dp)
             .padding(top = 48.dp, bottom = 12.dp, start = 12.dp, end = 12.dp)
     ) {

@@ -1,5 +1,6 @@
 package com.example.testbinlist.data
 
+import android.util.Log
 import com.example.testbinlist.BinListAppDatabase
 import com.example.testbinlist.data.db.BankDb
 import com.example.testbinlist.data.db.CardDb
@@ -14,13 +15,13 @@ import kotlinx.coroutines.flow.map
 
 class DataBaseRepositoryImpl(private val database: BinListAppDatabase) : DataBaseRepository {
     override suspend fun getHistory(): Flow<List<CardInfo>> = flow {
-        database.cardDao().getAll().map {
-            it.map { cardDb ->
-                val bankDb = database.bankDao().findBankByName(cardDb.bankName)
-                val countryDb = database.countryDao().findCountryByName(cardDb.countryName)
-                cardDb.toCardInfo(bankDb, countryDb)
-            }
+        val data = mutableListOf<CardInfo>()
+        database.cardDao().getAll().map { cardDb ->
+            val bankDb = database.bankDao().findBankByName(cardDb.bankName)
+            val countryDb = database.countryDao().findCountryByName(cardDb.countryName)
+            data.add(cardDb.toCardInfo(bankDb, countryDb))
         }
+        emit(data)
     }
 
     override suspend fun putCardIntoDb(cardInfo: CardInfo) {

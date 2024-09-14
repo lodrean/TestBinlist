@@ -6,7 +6,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.testbinlist.ui.theme.Pink80
 
 private val defaultModifier = Modifier
     .fillMaxSize()
@@ -16,6 +15,5 @@ private val defaultModifier = Modifier
 fun LoadingState(modifier: Modifier = defaultModifier) {
     CircularProgressIndicator(
         modifier = modifier,
-        color = Pink80
     )
 }

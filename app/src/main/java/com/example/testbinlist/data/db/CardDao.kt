@@ -16,7 +16,7 @@ interface CardDao {
     suspend fun deleteCard(card: CardDb)
 
     @Query("SELECT * FROM cards")
-    fun getAll(): Flow<List<CardDb>>
+    suspend fun getAll(): List<CardDb>
 
     @Query("SELECT cardNumber FROM cards")
     suspend fun getAllNumbers(): List<String>

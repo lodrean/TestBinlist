@@ -22,8 +22,8 @@ import androidx.compose.ui.graphics.Color.Companion.Cyan
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.compose.tertiaryLight
 import com.example.testbinlist.domain.CardInfo
-import com.example.testbinlist.ui.theme.Pink
 
 @Composable
 fun BankInfoCard(card: CardInfo) {
@@ -33,12 +33,12 @@ fun BankInfoCard(card: CardInfo) {
         ),
         modifier = Modifier.border(
             width = 1.dp,
-            brush = Brush.verticalGradient(listOf(Color.Transparent, Cyan)),
+            brush = Brush.verticalGradient(listOf(Color.Transparent, tertiaryLight)),
             shape = RoundedCornerShape(12.dp)
         )
     ) {
         Column(
-            modifier = Modifier.background(color = Pink)
+            modifier = Modifier
 
         ) {
             Text(
