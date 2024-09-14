@@ -1,6 +1,5 @@
 package com.example.testbinlist.data
 
-import android.util.Log
 import com.example.testbinlist.BinListAppDatabase
 import com.example.testbinlist.data.db.BankDb
 import com.example.testbinlist.data.db.CardDb
@@ -11,7 +10,6 @@ import com.example.testbinlist.domain.Country
 import com.example.testbinlist.domain.DataBaseRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 
 class DataBaseRepositoryImpl(private val database: BinListAppDatabase) : DataBaseRepository {
     override suspend fun getHistory(): Flow<List<CardInfo>> = flow {

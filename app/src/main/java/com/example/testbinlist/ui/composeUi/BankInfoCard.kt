@@ -1,6 +1,5 @@
 package com.example.testbinlist.ui.composeUi
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,7 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Cyan
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,8 +28,7 @@ fun BankInfoCard(card: CardInfo) {
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp,
-        ),
-        modifier = Modifier.border(
+        ), modifier = Modifier.border(
             width = 1.dp,
             brush = Brush.verticalGradient(listOf(Color.Transparent, tertiaryLight)),
             shape = RoundedCornerShape(12.dp)
@@ -42,7 +39,7 @@ fun BankInfoCard(card: CardInfo) {
 
         ) {
             Text(
-                text = "Bank Info Card",
+                text = "Search result of ${card.cardNumber}",
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyMedium
@@ -56,7 +53,7 @@ fun BankInfoCard(card: CardInfo) {
                 horizontalArrangement = Arrangement.SpaceEvenly,
             ) {
                 Column() {
-                    CardNumber(cardNumber = card.cardNumber)
+                    /*CardNumber(cardNumber = card.cardNumber)*/
                     CountryInfo(
                         country = card.country.name,
                         latitude = card.country.latitude.toString(),
@@ -111,7 +108,7 @@ private fun CountryInfo(country: String?, latitude: String?, longitude: String?)
     }
 }
 
-@Composable
+/*@Composable
 private fun CardNumber(cardNumber: String) {
     Row {
         Text(
@@ -122,7 +119,7 @@ private fun CardNumber(cardNumber: String) {
         )
     }
 
-}
+}*/
 
 @Composable
 private fun BankInfo(bankName: String?) {

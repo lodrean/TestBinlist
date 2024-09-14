@@ -14,7 +14,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.testbinlist.viewmodels.HistoryViewModel
-import kotlinx.coroutines.flow.asFlow
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
