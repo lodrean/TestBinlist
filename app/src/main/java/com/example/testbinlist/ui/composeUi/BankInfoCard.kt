@@ -20,17 +20,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.compose.tertiaryLight
 import com.example.testbinlist.domain.CardInfo
 
 @Composable
-fun BankInfoCard(card: CardInfo) {
+fun BankInfoCard(card: CardInfo, onElementClickListener: OnElementClickListener) {
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp,
         ), modifier = Modifier.border(
             width = 1.dp,
-            brush = Brush.verticalGradient(listOf(Color.Transparent, tertiaryLight)),
+            brush = Brush.verticalGradient(
+                listOf(
+                    Color.Transparent,
+                    MaterialTheme.colorScheme.tertiary
+                )
+            ),
             shape = RoundedCornerShape(12.dp)
         )
     ) {
@@ -57,7 +61,8 @@ fun BankInfoCard(card: CardInfo) {
                     CountryInfo(
                         country = card.country.name,
                         latitude = card.country.latitude.toString(),
-                        longitude = card.country.longitude.toString()
+                        longitude = card.country.longitude.toString(),
+                        onElementClickListener = onElementClickListener
                     )
                     CardType(type = card.type)
                     Brand(brand = card.brand)
@@ -65,9 +70,15 @@ fun BankInfoCard(card: CardInfo) {
 
                 Column() {
                     BankInfo(bankName = card.bank.name)
-                    PhoneInfo(phone = card.bank.phone)
+                    PhoneInfo(
+                        phone = card.bank.phone,
+                        onElementClickListener = onElementClickListener
+                    )
                     CityInfo(city = card.bank.city)
-                    BankUrl(bankUrl = card.bank.url)
+                    BankUrl(
+                        bankUrl = card.bank.url,
+                        onElementClickListener = onElementClickListener
+                    )
                 }
             }
         }
@@ -75,16 +86,23 @@ fun BankInfoCard(card: CardInfo) {
 }
 
 @Composable
-private fun CountryInfo(country: String?, latitude: String?, longitude: String?) {
+private fun CountryInfo(
+    country: String?,
+    latitude: String?,
+    longitude: String?,
+    onElementClickListener: OnElementClickListener
+) {
     Column() {
         Row {
             Text(
-                text = "Country: ", style = MaterialTheme.typography.bodySmall
+                text = "Country: ", style = MaterialTheme.typography.bodySmall,
             )
             Text(
                 text = country ?: "",
-                modifier = Modifier.clickable { },
-                style = MaterialTheme.typography.bodySmall
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.clickable {
+                    onElementClickListener.onItemClick(CardElement = CardElement.CountryCoordinates("geo:${latitude},${longitude}?q="))
+                }
             )
         }
         Row {
@@ -93,7 +111,6 @@ private fun CountryInfo(country: String?, latitude: String?, longitude: String?)
             )
             Text(
                 text = if (latitude != null) "$latitude ," else "",
-                modifier = Modifier.clickable { },
                 style = MaterialTheme.typography.bodySmall
             )
             Text(
@@ -101,25 +118,11 @@ private fun CountryInfo(country: String?, latitude: String?, longitude: String?)
             )
             Text(
                 text = if (longitude != null) "$longitude)" else ")",
-                modifier = Modifier.clickable { },
                 style = MaterialTheme.typography.bodySmall
             )
         }
     }
 }
-
-/*@Composable
-private fun CardNumber(cardNumber: String) {
-    Row {
-        Text(
-            text = "Card Number: ", style = MaterialTheme.typography.bodySmall
-        )
-        Text(
-            text = cardNumber, style = MaterialTheme.typography.bodySmall
-        )
-    }
-
-}*/
 
 @Composable
 private fun BankInfo(bankName: String?) {
@@ -135,25 +138,31 @@ private fun BankInfo(bankName: String?) {
 
 
 @Composable
-private fun BankUrl(bankUrl: String?) {
+private fun BankUrl(bankUrl: String?, onElementClickListener: OnElementClickListener) {
     Row() {
         Text(
             text = "Сайт: ", style = MaterialTheme.typography.bodySmall
         )
         Text(
-            text = bankUrl ?: "", style = MaterialTheme.typography.bodySmall
+            text = bankUrl ?: "",
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.clickable {
+                onElementClickListener.onItemClick(CardElement = CardElement.Site("$bankUrl"))
+            }
         )
     }
 }
 
 @Composable
-private fun PhoneInfo(phone: String?) {
+private fun PhoneInfo(phone: String, onElementClickListener: OnElementClickListener) {
     Row() {
         Text(
             text = "Телефон: ", style = MaterialTheme.typography.bodySmall
         )
         Text(
-            text = phone ?: "", style = MaterialTheme.typography.bodySmall
+            text = phone, style = MaterialTheme.typography.bodySmall, modifier = Modifier.clickable {
+                onElementClickListener.onItemClick(CardElement = CardElement.Phone(phone))
+            }
         )
     }
 }
@@ -198,5 +207,5 @@ private fun Brand(brand: String) {
 @Preview
 @Composable
 private fun BankInfoCardPreview() {
-    BankInfoCard(CardInfo())
+    BankInfoCard(CardInfo(), onElementClickListener = OnElementClickListener{})
 }

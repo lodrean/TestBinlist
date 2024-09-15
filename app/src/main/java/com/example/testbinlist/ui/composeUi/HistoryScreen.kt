@@ -21,6 +21,21 @@ fun HistoryScreen(
     viewModel: HistoryViewModel = koinViewModel(),
     triggerHistory: Boolean,
 ) {
+    val onElementClickListener = OnElementClickListener() { CardElement ->
+        when (CardElement) {
+            is CardElement.Site -> {
+                viewModel.openSite(CardElement.value)
+            }
+
+            is CardElement.CountryCoordinates -> {
+                viewModel.openCountryCoordinates(CardElement.value)
+            }
+
+            is CardElement.Phone -> {
+                viewModel.openPhone(CardElement.value)
+            }
+        }
+    }
     Column {
         val state by viewModel.stateFlow.collectAsState()
         var trigger = triggerHistory
@@ -36,7 +51,7 @@ fun HistoryScreen(
             val historyList = state.historyList
             items(historyList) { cardInfo ->
                 Spacer(modifier = Modifier.height(16.dp))
-                BankInfoCard(cardInfo)
+                BankInfoCard(cardInfo, onElementClickListener = onElementClickListener)
             }
         }
     }

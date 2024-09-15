@@ -33,16 +33,30 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SearchScreen(viewModel: SearchViewModel = koinViewModel<SearchViewModel>()) {
+    val onElementClickListener = OnElementClickListener() { CardElement ->
+        when (CardElement) {
+            is CardElement.Site -> {
+                viewModel.openSite(CardElement.value)
+            }
 
+            is CardElement.CountryCoordinates -> {
+                viewModel.openCountryCoordinates(CardElement.value)
+            }
+
+            is CardElement.Phone -> {
+                viewModel.openPhone(CardElement.value)
+            }
+        }
+    }
     val state by viewModel.stateFlow.collectAsState()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
-            .padding( bottom = 12.dp)
+            .padding(bottom = 12.dp),
 
-    ) {
+        ) {
 
         val creditCardText = remember { mutableStateOf(TextFieldValue()) }
         val maxCharCreditCard = 8
@@ -77,7 +91,7 @@ fun SearchScreen(viewModel: SearchViewModel = koinViewModel<SearchViewModel>()) 
 
         when {
             (state.cardInfo != CardInfo()) -> {
-                BankInfoCard(state.cardInfo)
+                BankInfoCard(state.cardInfo, onElementClickListener)
             }
 
             state.isLoading -> LoadingState()
@@ -173,10 +187,15 @@ fun SearchScreenPreview() {
             maxLines = 1,
             visualTransformation = CreditCardVisualTransformation()
         )
-        Button(modifier = Modifier.padding(top = 12.dp, bottom = 12.dp, start = 12.dp, end = 12.dp),
+        Button(modifier = Modifier.padding(
+            top = 12.dp,
+            bottom = 12.dp,
+            start = 12.dp,
+            end = 12.dp
+        ),
             onClick = {},
             content = { Text("Получить информацию") })
-        BankInfoCard(CardInfo())
+        BankInfoCard(CardInfo(), onElementClickListener = OnElementClickListener { })
     }
 
 }

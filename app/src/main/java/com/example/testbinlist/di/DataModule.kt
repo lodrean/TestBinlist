@@ -1,5 +1,6 @@
 package com.example.testbinlist.di
 
+import ExternalNavigator
 import androidx.room.Room
 import com.example.testbinlist.BinListAppDatabase
 import com.example.testbinlist.data.network.KtorNetworkClient
@@ -38,7 +39,9 @@ val dataModule = module {
             }
         }
     }
-
+    single<ExternalNavigator>() {
+        ExternalNavigator(androidContext())
+    }
     single<NetworkClient> {
         KtorNetworkClient(get(), androidContext())
     }

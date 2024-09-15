@@ -39,46 +39,40 @@ class MainActivity : ComponentActivity() {
         setContent {
             TestBinlistTheme() {
                 val navController = rememberNavController()
-                Scaffold(
-                    bottomBar = {
-                        NavigationBar {
-                            val navBackStackEntry by navController.currentBackStackEntryAsState()
-                            val currentDestination = navBackStackEntry?.destination
+                Scaffold(bottomBar = {
+                    NavigationBar {
+                        val navBackStackEntry by navController.currentBackStackEntryAsState()
+                        val currentDestination = navBackStackEntry?.destination
 
-                            topLevelRoutes.forEach { topLevelRoute ->
-                                NavigationBarItem(
-                                    icon = {
-                                        Icon(
-                                            topLevelRoute.icon,
-                                            contentDescription = topLevelRoute.name
-                                        )
-                                    },
-                                    label = { Text(topLevelRoute.name) },
-                                    selected = currentDestination?.hierarchy?.any { it.route == topLevelRoute.route } == true,
-                                    onClick = {
-                                        navController.navigate(topLevelRoute.route) {
-                                            // Pop up to the start destination of the graph to
-                                            // avoid building up a large stack of destinations
-                                            // on the back stack as users select items
-                                            popUpTo(navController.graph.findStartDestination().id) {
-                                                saveState = true
-                                            }
-                                            // Avoid multiple copies of the same destination when
-                                            // reselecting the same item
-                                            launchSingleTop = true
-                                            // Restore state when reselecting a previously selected item
-                                            restoreState = true
-                                        }
-                                    }
+                        topLevelRoutes.forEach { topLevelRoute ->
+                            NavigationBarItem(icon = {
+                                Icon(
+                                    imageVector = topLevelRoute.icon,
+                                    contentDescription = topLevelRoute.name
                                 )
-                            }
+                            },
+                                label = { Text(topLevelRoute.name) },
+                                selected = currentDestination?.hierarchy?.any { it.route == topLevelRoute.route } == true,
+                                onClick = {
+                                    navController.navigate(topLevelRoute.route) {
+                                        // Pop up to the start destination of the graph to
+                                        // avoid building up a large stack of destinations
+                                        // on the back stack as users select items
+                                        popUpTo(navController.graph.findStartDestination().id) {
+                                            saveState = true
+                                        }
+                                        // Avoid multiple copies of the same destination when
+                                        // reselecting the same item
+                                        launchSingleTop = true
+                                        // Restore state when reselecting a previously selected item
+                                        restoreState = true
+                                    }
+                                })
                         }
                     }
-                ) { innerPadding ->
+                }) { innerPadding ->
                     NavHost(
-                        navController,
-                        startDestination = "search",
-                        Modifier.padding(innerPadding)
+                        navController, startDestination = "search", Modifier.padding(innerPadding)
                     ) {
                         composable("search") { SearchScreen() }
                         composable("history") { HistoryScreen(triggerHistory = true) }

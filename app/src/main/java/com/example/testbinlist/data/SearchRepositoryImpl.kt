@@ -16,7 +16,7 @@ class SearchRepositoryImpl(private val networkClient: NetworkClient) : SearchRep
             networkClient.doRequest(query).onSuccess {
                 result = Pair(it, "")
             }.onFailure {
-                result = Pair(CardInfo(), it.message?: "Неизвестная ошибка")
+                result = Pair(CardInfo(), it.message ?: "Неизвестная ошибка")
             }
         }
         emit(result)
@@ -24,13 +24,5 @@ class SearchRepositoryImpl(private val networkClient: NetworkClient) : SearchRep
 
     override fun getCountryCoordinate(country: String) {
         TODO("Not yet implemented")
-    }
-
-    private fun saveCountryToDB() {
-        //ToDo
-    }
-
-    private fun saveBankToDB() {
-        //ToDo
     }
 }

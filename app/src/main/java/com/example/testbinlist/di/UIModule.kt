@@ -8,9 +8,9 @@ import org.koin.dsl.module
 val uiModule = module {
 
     viewModel<SearchViewModel> {
-        SearchViewModel(get(), get())
+        SearchViewModel(get(), get(), get())
     }
     viewModel<HistoryViewModel> {
-        HistoryViewModel(get())
+        HistoryViewModel(get(), get())
     }
 }
