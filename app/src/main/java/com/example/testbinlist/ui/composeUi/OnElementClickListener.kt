@@ -1,7 +1,7 @@
 package com.example.testbinlist.ui.composeUi
 
 fun interface OnElementClickListener {
-    fun onItemClick(CardElement: CardElement)
+    fun onItemClick(cardElement: CardElement)
 }
 
 sealed class CardElement {

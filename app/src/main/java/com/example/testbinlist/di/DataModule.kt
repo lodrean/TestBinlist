@@ -39,7 +39,7 @@ val dataModule = module {
             }
         }
     }
-    single<ExternalNavigator>() {
+    single<ExternalNavigator> {
         ExternalNavigator(androidContext())
     }
     single<NetworkClient> {

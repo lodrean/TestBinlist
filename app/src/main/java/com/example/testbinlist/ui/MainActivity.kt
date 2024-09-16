@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
         )
         enableEdgeToEdge()
         setContent {
-            TestBinlistTheme() {
+            TestBinlistTheme {
                 val navController = rememberNavController()
                 Scaffold(bottomBar = {
                     NavigationBar {

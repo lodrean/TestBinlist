@@ -33,18 +33,18 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SearchScreen(viewModel: SearchViewModel = koinViewModel<SearchViewModel>()) {
-    val onElementClickListener = OnElementClickListener() { CardElement ->
-        when (CardElement) {
+    val onElementClickListener = OnElementClickListener { cardElement ->
+        when (cardElement) {
             is CardElement.Site -> {
-                viewModel.openSite(CardElement.value)
+                viewModel.openSite(cardElement.value)
             }
 
             is CardElement.CountryCoordinates -> {
-                viewModel.openCountryCoordinates(CardElement.value)
+                viewModel.openCountryCoordinates(cardElement.value)
             }
 
             is CardElement.Phone -> {
-                viewModel.openPhone(CardElement.value)
+                viewModel.openPhone(cardElement.value)
             }
         }
     }

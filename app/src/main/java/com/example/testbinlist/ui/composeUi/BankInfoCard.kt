@@ -28,20 +28,14 @@ fun BankInfoCard(card: CardInfo, onElementClickListener: OnElementClickListener)
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp,
         ), modifier = Modifier.border(
-            width = 1.dp,
-            brush = Brush.verticalGradient(
+            width = 1.dp, brush = Brush.verticalGradient(
                 listOf(
-                    Color.Transparent,
-                    MaterialTheme.colorScheme.tertiary
+                    Color.Transparent, MaterialTheme.colorScheme.tertiary
                 )
-            ),
-            shape = RoundedCornerShape(12.dp)
+            ), shape = RoundedCornerShape(12.dp)
         )
     ) {
-        Column(
-            modifier = Modifier
-
-        ) {
+        Column {
             Text(
                 text = "Search result of ${card.cardNumber}",
                 modifier = Modifier.fillMaxWidth(),
@@ -49,14 +43,14 @@ fun BankInfoCard(card: CardInfo, onElementClickListener: OnElementClickListener)
                 style = MaterialTheme.typography.bodyMedium
             )
             Row(
-                modifier = Modifier
-                    .align(alignment = Alignment.Start)
-                    .padding(12.dp)
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.Top,
-                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start
             ) {
-                Column() {
+                Column(
+                    modifier = Modifier
+                        .padding(start = 12.dp, end = 4.dp)
+                        .fillMaxWidth(0.5f),
+                    horizontalAlignment = Alignment.Start
+                ) {
                     /*CardNumber(cardNumber = card.cardNumber)*/
                     CountryInfo(
                         country = card.country.name,
@@ -67,17 +61,16 @@ fun BankInfoCard(card: CardInfo, onElementClickListener: OnElementClickListener)
                     CardType(type = card.type)
                     Brand(brand = card.brand)
                 }
-
-                Column() {
+                Column(
+                    modifier = Modifier.fillMaxWidth(0.5f), horizontalAlignment = Alignment.Start
+                ) {
                     BankInfo(bankName = card.bank.name)
                     PhoneInfo(
-                        phone = card.bank.phone,
-                        onElementClickListener = onElementClickListener
+                        phone = card.bank.phone, onElementClickListener = onElementClickListener
                     )
                     CityInfo(city = card.bank.city)
                     BankUrl(
-                        bankUrl = card.bank.url,
-                        onElementClickListener = onElementClickListener
+                        bankUrl = card.bank.url, onElementClickListener = onElementClickListener
                     )
                 }
             }
@@ -92,18 +85,21 @@ private fun CountryInfo(
     longitude: String?,
     onElementClickListener: OnElementClickListener
 ) {
-    Column() {
+    Column {
         Row {
             Text(
                 text = "Country: ", style = MaterialTheme.typography.bodySmall,
             )
-            Text(
-                text = country ?: "",
+            Text(text = country ?: "",
                 style = MaterialTheme.typography.bodySmall,
+                color = Color.Blue,
                 modifier = Modifier.clickable {
-                    onElementClickListener.onItemClick(CardElement = CardElement.CountryCoordinates("geo:${latitude},${longitude}?q="))
-                }
-            )
+                    onElementClickListener.onItemClick(
+                        cardElement = CardElement.CountryCoordinates(
+                            "geo:${latitude},${longitude}?q="
+                        )
+                    )
+                })
         }
         Row {
             Text(
@@ -126,7 +122,7 @@ private fun CountryInfo(
 
 @Composable
 private fun BankInfo(bankName: String?) {
-    Row() {
+    Row {
         Text(
             text = "Bank: ", style = MaterialTheme.typography.bodySmall
         )
@@ -139,38 +135,40 @@ private fun BankInfo(bankName: String?) {
 
 @Composable
 private fun BankUrl(bankUrl: String?, onElementClickListener: OnElementClickListener) {
-    Row() {
+    Row {
         Text(
             text = "Сайт: ", style = MaterialTheme.typography.bodySmall
         )
         Text(
             text = bankUrl ?: "",
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodySmall, color = Color.Blue,
             modifier = Modifier.clickable {
-                onElementClickListener.onItemClick(CardElement = CardElement.Site("$bankUrl"))
-            }
-        )
+                    onElementClickListener.onItemClick(cardElement = CardElement.Site("$bankUrl"))
+                },
+
+            )
     }
 }
 
 @Composable
 private fun PhoneInfo(phone: String, onElementClickListener: OnElementClickListener) {
-    Row() {
+    Row {
         Text(
             text = "Телефон: ", style = MaterialTheme.typography.bodySmall
         )
-        Text(
-            text = phone, style = MaterialTheme.typography.bodySmall, modifier = Modifier.clickable {
-                onElementClickListener.onItemClick(CardElement = CardElement.Phone(phone))
-            }
-        )
+        Text(text = phone,
+            style = MaterialTheme.typography.bodySmall,
+            color = Color.Blue,
+            modifier = Modifier.clickable {
+                onElementClickListener.onItemClick(cardElement = CardElement.Phone(phone))
+            })
     }
 }
 
 
 @Composable
 private fun CityInfo(city: String?) {
-    Row() {
+    Row {
         Text(
             text = "Город: ", style = MaterialTheme.typography.bodySmall
         )
@@ -182,7 +180,7 @@ private fun CityInfo(city: String?) {
 
 @Composable
 private fun CardType(type: String) {
-    Row() {
+    Row {
         Text(
             text = "Тип карты: ", style = MaterialTheme.typography.bodySmall
         )
@@ -194,7 +192,7 @@ private fun CardType(type: String) {
 
 @Composable
 private fun Brand(brand: String) {
-    Row() {
+    Row {
         Text(
             text = "Brand: ", style = MaterialTheme.typography.bodySmall
         )
@@ -207,5 +205,5 @@ private fun Brand(brand: String) {
 @Preview
 @Composable
 private fun BankInfoCardPreview() {
-    BankInfoCard(CardInfo(), onElementClickListener = OnElementClickListener{})
+    BankInfoCard(CardInfo(), onElementClickListener = OnElementClickListener {})
 }
