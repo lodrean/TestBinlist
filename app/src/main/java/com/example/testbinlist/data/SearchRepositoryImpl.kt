@@ -21,8 +21,4 @@ class SearchRepositoryImpl(private val networkClient: NetworkClient) : SearchRep
         }
         emit(result)
     }
-
-    override fun getCountryCoordinate(country: String) {
-        TODO("Not yet implemented")
-    }
 }
