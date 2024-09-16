@@ -6,13 +6,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CountryDto(
-    @SerialName("alpha2") val alpha2: String,
-    @SerialName("currency") val currency: String,
-    @SerialName("emoji") val emoji: String,
-    @SerialName("latitude") val latitude: Int,
-    @SerialName("longitude") val longitude: Int,
-    @SerialName("name") val name: String,
-    @SerialName("numeric") val numeric: String
+    @SerialName("latitude") val latitude: Int = 0,
+    @SerialName("longitude") val longitude: Int = 0,
+    @SerialName("name") val name: String = "",
 )
 
-fun CountryDto.toDomain() = Country(alpha2, currency, emoji, latitude, longitude, name, numeric)
+fun CountryDto.toDomain() = Country(name, latitude, longitude)

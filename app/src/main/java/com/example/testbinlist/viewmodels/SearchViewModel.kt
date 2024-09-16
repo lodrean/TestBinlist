@@ -3,20 +3,65 @@ package com.example.testbinlist.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.testbinlist.domain.CardInfo
-import com.example.testbinlist.domain.GetCardInfoUseCaseImpl
+import com.example.testbinlist.domain.DataBaseRepository
+import com.example.testbinlist.domain.GetCardInfoUseCase
+import com.example.testbinlist.domain.SharingInteractor
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
-import org.koin.core.KoinApplication.Companion.init
 
-class SearchViewModel(private val getCardInfoUseCase: GetCardInfoUseCaseImpl) : ViewModel() {
-    private val _cardInfo = MutableStateFlow<CardInfo>(CardInfo())
-    val cardInfo: StateFlow<CardInfo> = _cardInfo
-    fun getCardInfo(value: String) {
+class SearchViewModel(
+    private val getCardInfoUseCase: GetCardInfoUseCase,
+    private val dataBase: DataBaseRepository,
+    private val sharingInteractor: SharingInteractor
+) : ViewModel() {
+    private var currentCardInfo = CardInfo()
+    private val _internalStorageFlow = MutableStateFlow(
+        value = SearchViewState(
+            isLoading = false, cardInfo = currentCardInfo, errorMessage = null
+        )
+    )
+    val stateFlow = _internalStorageFlow.asStateFlow()
+
+    fun fetchCardInfo(value: String) {
         viewModelScope.launch {
-            getCardInfoUseCase.execute().collect {
-                _cardInfo.value = it
+            _internalStorageFlow.update { it.copy(isLoading = true) }
+            getCardInfoUseCase.execute(value).collect { (cardInfo, errorMessage) ->
+                currentCardInfo = cardInfo
+                if (cardInfo.country.name.isNotEmpty()) {
+                    dataBase.putCardIntoDb(cardInfo)
+                    _internalStorageFlow.update {
+                        it.copy(cardInfo = currentCardInfo, errorMessage = null)
+                    }
+                } else {
+                    _internalStorageFlow.updateAndGet {
+                        it.copy(
+                            cardInfo = CardInfo(), errorMessage = errorMessage
+                        )
+                    }
+                }
+                _internalStorageFlow.update { it.copy(isLoading = false) }
             }
+
         }
+
+    }
+
+    fun userMessageShown() {
+        _internalStorageFlow.value = _internalStorageFlow.value.copy(errorMessage = null)
+    }
+
+    fun openSite(value: String) {
+        sharingInteractor.openLink(value)
+    }
+
+    fun openCountryCoordinates(value: String) {
+        sharingInteractor.openMap(value)
+    }
+
+    fun openPhone(value: String) {
+        sharingInteractor.openDialer(value)
     }
 }

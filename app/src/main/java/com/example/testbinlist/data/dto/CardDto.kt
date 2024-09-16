@@ -7,13 +7,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 class CardDto(
     @SerialName("bank") val bank: BankDto,
-    @SerialName("brand") val brand: String,
+    @SerialName("brand") val brand: String = "",
     @SerialName("country") val country: CountryDto,
-    @SerialName("number") val number: NumberDto,
-    @SerialName("prepaid") val prepaid: Boolean,
-    @SerialName("scheme") val scheme: String,
-    @SerialName("type") val type: String,
+    @SerialName("scheme") val scheme: String = "",
+    @SerialName("type") val type: String = "",
 )
 
-fun CardDto.toDomain() =
-    CardInfo(bank.toDomain(), brand, country.toDomain(), number.toDomain(), prepaid, scheme, type)
+fun CardDto.toDomain(id: String) =
+    CardInfo(id, bank.toDomain(), brand, country.toDomain(), scheme, type)

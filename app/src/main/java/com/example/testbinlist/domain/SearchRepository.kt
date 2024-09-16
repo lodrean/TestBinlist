@@ -1,6 +1,7 @@
 package com.example.testbinlist.domain
 
+import kotlinx.coroutines.flow.Flow
+
 interface SearchRepository {
-    fun searchCardInfo(query: String) : CardInfo
-    fun getCountryCoordinate(country: String)
+    fun fetchCardInfo(query: String): Flow<Pair<CardInfo, String>>
 }

@@ -1,7 +1,9 @@
 package com.example.testbinlist.data.network
 
-import com.example.testbinlist.data.dto.CardDto
+import com.example.testbinlist.domain.CardInfo
+import com.example.testbinlist.util.ApiOperation
+
 
 interface NetworkClient {
-    suspend fun getBinInfo(id: String): CardDto
+    suspend fun doRequest(id: String) : ApiOperation<CardInfo>
 }

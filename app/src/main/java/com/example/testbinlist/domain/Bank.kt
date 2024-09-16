@@ -1,7 +1,5 @@
 package com.example.testbinlist.domain
 
-
-
 data class Bank(
     val city: String,
     val name: String,

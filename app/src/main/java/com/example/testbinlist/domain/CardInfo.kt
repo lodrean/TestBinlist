@@ -1,11 +1,19 @@
 package com.example.testbinlist.domain
 
 data class CardInfo(
-    val bank: Bank,
-    val brand: String,
-    val country: Country,
-    val number: Number,
-    val prepaid: Boolean,
-    val scheme: String,
-    val type: String
+    val cardNumber: String = "",
+    val bank: Bank = Bank(
+        "",
+        "",
+        "",
+        ""
+    ),
+    val brand: String = "",
+    val country: Country = Country(
+        "",
+        0,
+        0
+    ),
+    val scheme: String = "",
+    val type: String = ""
 )
