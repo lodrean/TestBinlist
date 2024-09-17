@@ -22,5 +22,5 @@ interface BankDao {
     suspend fun getAllBankNames(): List<String>
 
     @Query("SELECT * FROM banks WHERE name = :name")
-    suspend fun findBankByName(name: String): BankDb
+    suspend fun findBankByName(name: String): BankDb?
 }

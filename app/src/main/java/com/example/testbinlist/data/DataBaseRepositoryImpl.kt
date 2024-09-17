@@ -17,7 +17,7 @@ class DataBaseRepositoryImpl(private val database: BinListAppDatabase) : DataBas
         database.cardDao().getAll().map { cardDb ->
             val bankDb = database.bankDao().findBankByName(cardDb.bankName)
             val countryDb = database.countryDao().findCountryByName(cardDb.countryName)
-            data.add(cardDb.toCardInfo(bankDb, countryDb))
+            data.add(cardDb.toCardInfo(bankDb ?: BankDb("", "", "", ""), countryDb))
         }
         emit(data)
     }
@@ -56,7 +56,7 @@ class DataBaseRepositoryImpl(private val database: BinListAppDatabase) : DataBas
     }
 
     private fun BankDb.toBank(): Bank {
-        return Bank(this.name, this.city, this.phone, this.url)
+        return Bank(this.city, this.name, this.phone, this.url)
     }
 
     private fun Country.toCountryDb(): CountryDb {
