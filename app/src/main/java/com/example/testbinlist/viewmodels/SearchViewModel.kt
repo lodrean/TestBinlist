@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.testbinlist.domain.CardInfo
 import com.example.testbinlist.domain.DataBaseRepository
 import com.example.testbinlist.domain.GetCardInfoUseCase
-import com.example.testbinlist.domain.SharingInteractor
+import com.example.testbinlist.domain.SharingRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 class SearchViewModel(
     private val getCardInfoUseCase: GetCardInfoUseCase,
     private val dataBase: DataBaseRepository,
-    private val sharingInteractor: SharingInteractor
+    private val sharingRepository: SharingRepository
 ) : ViewModel() {
     private var currentCardInfo = CardInfo()
     private val _internalStorageFlow = MutableStateFlow(
@@ -54,14 +54,14 @@ class SearchViewModel(
     }
 
     fun openSite(value: String) {
-        sharingInteractor.openLink(value)
+        sharingRepository.openLink(value)
     }
 
     fun openCountryCoordinates(value: String) {
-        sharingInteractor.openMap(value)
+        sharingRepository.openMap(value)
     }
 
     fun openPhone(value: String) {
-        sharingInteractor.openDialer(value)
+        sharingRepository.openDialer(value)
     }
 }

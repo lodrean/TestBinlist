@@ -1,11 +1,11 @@
 package com.example.testbinlist.data.sharing
 
 import ExternalNavigator
-import com.example.testbinlist.domain.SharingInteractor
+import com.example.testbinlist.domain.SharingRepository
 
-class SharingInteractorImpl(
+class SharingRepositoryImpl(
     private val externalNavigator: ExternalNavigator,
-) : SharingInteractor {
+) : SharingRepository {
     override fun openLink(link: String) {
         externalNavigator.openLink(link)
     }

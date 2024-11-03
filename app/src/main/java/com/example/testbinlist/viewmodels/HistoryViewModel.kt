@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.testbinlist.domain.CardInfo
 import com.example.testbinlist.domain.DataBaseRepository
-import com.example.testbinlist.domain.SharingInteractor
+import com.example.testbinlist.domain.SharingRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class HistoryViewModel(
     private val dataBaseRepository: DataBaseRepository,
-    private val sharingInteractor: SharingInteractor
+    private val sharingRepository: SharingRepository
 ) : ViewModel() {
     private val _stateFlow = MutableStateFlow(HistoryViewState(emptyList()))
     val stateFlow = _stateFlow.asStateFlow()
@@ -32,15 +32,15 @@ class HistoryViewModel(
     }
 
     fun openSite(value: String) {
-        sharingInteractor.openLink(value)
+        sharingRepository.openLink(value)
     }
 
     fun openCountryCoordinates(value: String) {
-        sharingInteractor.openMap(value)
+        sharingRepository.openMap(value)
     }
 
     fun openPhone(value: String) {
-        sharingInteractor.openDialer(value)
+        sharingRepository.openDialer(value)
     }
 }
 

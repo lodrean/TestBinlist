@@ -1,6 +1,6 @@
 package com.example.testbinlist.domain
 
-interface SharingInteractor {
+interface SharingRepository {
     fun openLink(link: String)
 
     fun openDialer(phoneNumber: String)
