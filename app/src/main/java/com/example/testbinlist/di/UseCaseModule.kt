@@ -11,7 +11,4 @@ val useCaseModule = module {
     factory<GetCardInfoUseCase> {
         GetCardInfoUseCaseImpl(get())
     }
-    factory<SharingRepository> {
-        SharingRepositoryImpl(get())
-    }
 }
