@@ -1,13 +1,7 @@
-package com.example.testbinlist
+package com.example.testbinlist.data.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.testbinlist.data.db.BankDao
-import com.example.testbinlist.data.db.BankDb
-import com.example.testbinlist.data.db.CardDao
-import com.example.testbinlist.data.db.CardDb
-import com.example.testbinlist.data.db.CountryDao
-import com.example.testbinlist.data.db.CountryDb
 
 
 @Database(
