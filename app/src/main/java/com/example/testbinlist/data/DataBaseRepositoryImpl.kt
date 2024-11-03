@@ -1,6 +1,6 @@
 package com.example.testbinlist.data
 
-import com.example.testbinlist.BinListAppDatabase
+import com.example.testbinlist.data.db.BinListAppDatabase
 import com.example.testbinlist.data.db.BankDb
 import com.example.testbinlist.data.db.CardDb
 import com.example.testbinlist.data.db.CountryDb

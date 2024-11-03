@@ -2,7 +2,7 @@ package com.example.testbinlist.di
 
 import ExternalNavigator
 import androidx.room.Room
-import com.example.testbinlist.BinListAppDatabase
+import com.example.testbinlist.data.db.BinListAppDatabase
 import com.example.testbinlist.data.network.KtorNetworkClient
 import com.example.testbinlist.data.network.NetworkClient
 import io.ktor.client.HttpClient
