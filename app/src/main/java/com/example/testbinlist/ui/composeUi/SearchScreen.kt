@@ -1,6 +1,5 @@
 package com.example.testbinlist.ui.composeUi
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -16,7 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.OffsetMapping
@@ -96,21 +95,13 @@ fun SearchScreen(viewModel: SearchViewModel = koinViewModel<SearchViewModel>()) 
 
             state.isLoading -> LoadingState()
             state.errorMessage != null -> {
-                ShowSingleToastEvent(state)
-                viewModel.userMessageShown()
+                // Errors now shown via Snackbar in MainActivity
             }
         }
 
     }
 }
 
-
-@Composable
-private fun ShowSingleToastEvent(state: SearchViewState) {
-    Toast.makeText(
-        LocalContext.current, state.errorMessage, Toast.LENGTH_SHORT
-    ).show()
-}
 
 
 class CreditCardVisualTransformation : VisualTransformation {

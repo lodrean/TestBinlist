@@ -6,8 +6,10 @@ import com.example.testbinlist.domain.CardInfo
 import com.example.testbinlist.domain.DataBaseRepository
 import com.example.testbinlist.domain.GetCardInfoUseCase
 import com.example.testbinlist.domain.SharingRepository
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
@@ -25,6 +27,9 @@ class SearchViewModel(
     )
     val stateFlow = _internalStorageFlow.asStateFlow()
 
+    private val _snackbarEvent = Channel<String>()
+    val snackbarEvent = _snackbarEvent.receiveAsFlow()
+
     fun fetchCardInfo(value: String) {
         viewModelScope.launch {
             _internalStorageFlow.update { it.copy(isLoading = true) }
@@ -36,10 +41,11 @@ class SearchViewModel(
                         it.copy(cardInfo = currentCardInfo, errorMessage = null)
                     }
                 } else {
-                    _internalStorageFlow.updateAndGet {
-                        it.copy(
-                            cardInfo = CardInfo(), errorMessage = errorMessage
-                        )
+                    viewModelScope.launch {
+                        _snackbarEvent.send(errorMessage ?: "Unknown error")
+                    }
+                    _internalStorageFlow.update {
+                        it.copy(cardInfo = CardInfo())
                     }
                 }
                 _internalStorageFlow.update { it.copy(isLoading = false) }
@@ -47,10 +53,6 @@ class SearchViewModel(
 
         }
 
-    }
-
-    fun userMessageShown() {
-        _internalStorageFlow.value = _internalStorageFlow.value.copy(errorMessage = null)
     }
 
     fun openSite(value: String) {
