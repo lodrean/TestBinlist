@@ -2,6 +2,7 @@ package com.example.testbinlist.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.testbinlist.domain.BinValidator
 import com.example.testbinlist.domain.CardInfo
 import com.example.testbinlist.domain.DataBaseRepository
 import com.example.testbinlist.domain.GetCardInfoUseCase
@@ -31,6 +32,20 @@ class SearchViewModel(
     val snackbarEvent = _snackbarEvent.receiveAsFlow()
 
     fun fetchCardInfo(value: String) {
+        val validation = BinValidator.validate(value)
+
+        when (validation) {
+            is BinValidator.ValidationResult.Error -> {
+                viewModelScope.launch {
+                    _snackbarEvent.send(validation.message)
+                }
+                return
+            }
+            is BinValidator.ValidationResult.Success -> {
+                // Continue with API call
+            }
+        }
+
         viewModelScope.launch {
             _internalStorageFlow.update { it.copy(isLoading = true) }
             getCardInfoUseCase.execute(value).collect { (cardInfo, errorMessage) ->
@@ -50,9 +65,7 @@ class SearchViewModel(
                 }
                 _internalStorageFlow.update { it.copy(isLoading = false) }
             }
-
         }
-
     }
 
     fun openSite(value: String) {
