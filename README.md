@@ -8,12 +8,10 @@
 
 ## 📱 Скриншоты
 
-> _Скриншоты будут добавлены позже_
-
-<!--
-<img src="screenshots/main.png" width="300"/>
-<img src="screenshots/detail.png" width="300"/>
--->
+<p>
+  <img src="screenshots/01-search-empty.png" width="300"/>
+  <img src="screenshots/02-search-input.png" width="300"/>
+</p>
 
 ---
 
@@ -62,10 +60,10 @@ cd TestBinlist
 
 ## ✅ TODO
 
-- [ ] Добавить скриншоты
-- [ ] Добавить Unit-тесты
+- [x] Добавить скриншоты
+- [x] Добавить Unit-тесты
+- [x] История поиска
 - [ ] Кэширование запросов (offline-first)
-- [ ] История поиска
 - [ ] Поддержка dark mode
 
 ---
