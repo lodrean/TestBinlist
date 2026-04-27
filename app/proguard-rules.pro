@@ -1,21 +1,38 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# TestBinlist ProGuard/R8 Rules
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Preserve line numbers for debugging
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# --- Kotlinx Serialization ---
+-keepattributes *Annotation*, InnerClasses
+-dontnote kotlinx.serialization.AnnotationsKt
+-keepclassmembers class kotlinx.serialization.json.** { *** Companion; }
+-keepclasseswithmembers class * {
+    @kotlinx.serialization.Serializable <methods>;
+}
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# Keep serializable DTOs
+-keep @kotlinx.serialization.Serializable class com.example.testbinlist.data.dto.** { *; }
+
+# --- Ktor Client ---
+-keep class io.ktor.client.** { *; }
+-keep class io.ktor.http.** { *; }
+-keep class io.ktor.util.** { *; }
+-dontwarn io.ktor.**
+
+# --- Room ---
+-keep class * extends androidx.room.RoomDatabase
+-keep @androidx.room.Entity class *
+-dontwarn androidx.room.paging.**
+
+# --- Koin ---
+-keep class org.koin.** { *; }
+-dontwarn org.koin.**
+
+# --- Compose (runtime) ---
+-keep class androidx.compose.runtime.** { *; }
+
+# --- General Kotlin ---
+-keep class kotlin.reflect.jvm.internal.** { *; }
+-dontwarn kotlin.reflect.jvm.internal.**
