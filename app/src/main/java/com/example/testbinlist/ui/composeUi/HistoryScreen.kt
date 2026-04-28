@@ -40,16 +40,22 @@ fun HistoryScreen(
             viewModel.fetchHistory()
         }
     }
-    Column {
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
         val state by viewModel.stateFlow.collectAsState()
         SimpleToolBar("История")
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            val historyList = state.historyList
-            items(historyList) { cardInfo ->
-                Spacer(modifier = Modifier.height(16.dp))
-                BankInfoCard(cardInfo, onElementClickListener = onElementClickListener)
+        if (state.historyList.isEmpty()) {
+            EmptyState("История поиска пуста")
+        } else {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                val historyList = state.historyList
+                items(historyList) { cardInfo ->
+                    Spacer(modifier = Modifier.height(16.dp))
+                    BankInfoCard(cardInfo, onElementClickListener = onElementClickListener)
+                }
             }
         }
     }

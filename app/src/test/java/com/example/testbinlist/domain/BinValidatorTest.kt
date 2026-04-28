@@ -9,7 +9,7 @@ class BinValidatorTest {
     @Test
     fun `valid Visa BIN returns Success`() {
         // Visa starts with 4, valid Luhn: 4532015112830366
-        val result = BinValidator.validate("45320151")
+        val result = BinValidator.validate("40000002")
 
         assertTrue(result is BinValidator.ValidationResult.Success)
         val success = result as BinValidator.ValidationResult.Success
@@ -19,7 +19,7 @@ class BinValidatorTest {
     @Test
     fun `valid Mastercard BIN returns Success`() {
         // Mastercard starts with 5, valid Luhn: 5425233430109903
-        val result = BinValidator.validate("54252334")
+        val result = BinValidator.validate("50000009")
 
         assertTrue(result is BinValidator.ValidationResult.Success)
         val success = result as BinValidator.ValidationResult.Success
@@ -55,7 +55,7 @@ class BinValidatorTest {
     @Test
     fun `MIR card detected correctly`() {
         // MIR starts with 2200-2204
-        val result = BinValidator.validate("22000001")
+        val result = BinValidator.validate("22000004")
 
         assertTrue(result is BinValidator.ValidationResult.Success)
         val success = result as BinValidator.ValidationResult.Success
@@ -65,7 +65,7 @@ class BinValidatorTest {
     @Test
     fun `unknown payment system detected`() {
         // Starts with 99 (not in any known system), but valid Luhn
-        val result = BinValidator.validate("99999999")
+        val result = BinValidator.validate("99000002")
 
         assertTrue(result is BinValidator.ValidationResult.Success)
         val success = result as BinValidator.ValidationResult.Success
@@ -74,10 +74,10 @@ class BinValidatorTest {
 
     @Test
     fun `non-digit characters are filtered`() {
-        val result = BinValidator.validate("4532-0151")
+        val result = BinValidator.validate("4000-0002")
 
         assertTrue(result is BinValidator.ValidationResult.Success)
         val success = result as BinValidator.ValidationResult.Success
-        assertEquals("45320151", success.bin)
+        assertEquals("40000002", success.bin)
     }
 }

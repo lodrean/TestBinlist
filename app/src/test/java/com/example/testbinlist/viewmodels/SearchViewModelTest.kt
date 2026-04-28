@@ -1,6 +1,5 @@
 package com.example.testbinlist.viewmodels
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import app.cash.turbine.test
 import com.example.testbinlist.domain.CardInfo
 import com.example.testbinlist.domain.Country
@@ -26,9 +25,6 @@ import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SearchViewModelTest {
-
-    @get:Rule
-    val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val testDispatcher = UnconfinedTestDispatcher()
 
@@ -63,12 +59,12 @@ class SearchViewModelTest {
     fun `successful search updates state`() = runTest {
         val testCard = CardInfo(
             country = Country(name = "Russia", latitude = 60, longitude = 100),
-            bank = com.example.testbinlist.domain.Bank(name = "Sberbank", city = "Moscow"),
+            bank = com.example.testbinlist.domain.Bank(name = "Sberbank", city = "Moscow", phone = "", url = ""),
             scheme = "visa"
         )
-        fakeUseCase.result = flowOf(testCard to null)
+        fakeUseCase.result = flowOf(testCard to "")
 
-        viewModel.fetchCardInfo("427612")
+        viewModel.fetchCardInfo("40000002")
 
         val state = viewModel.stateFlow.value
         assertFalse(state.isLoading)
@@ -88,7 +84,7 @@ class SearchViewModelTest {
 
     @Test
     fun `loading state is shown during request`() = runTest {
-        fakeUseCase.result = flowOf(CardInfo() to null)
+        fakeUseCase.result = flowOf(CardInfo() to "")
 
         viewModel.fetchCardInfo("99999999")
 
@@ -99,9 +95,9 @@ class SearchViewModelTest {
 
     // Fake implementations
     private class FakeGetCardInfoUseCase : GetCardInfoUseCase {
-        var result: Flow<Pair<CardInfo, String?>> = flowOf(CardInfo() to null)
+        var result: Flow<Pair<CardInfo, String>> = flowOf(CardInfo() to "")
 
-        override suspend fun execute(id: String): Flow<Pair<CardInfo, String?>> {
+        override suspend fun execute(id: String): Flow<Pair<CardInfo, String>> {
             return result
         }
     }
@@ -113,7 +109,7 @@ class SearchViewModelTest {
             savedCards.add(cardInfo)
         }
 
-        override fun getAllCards(): kotlinx.coroutines.flow.Flow<List<CardInfo>> {
+        override fun getHistory(): kotlinx.coroutines.flow.Flow<List<CardInfo>> {
             return flowOf(savedCards)
         }
     }
