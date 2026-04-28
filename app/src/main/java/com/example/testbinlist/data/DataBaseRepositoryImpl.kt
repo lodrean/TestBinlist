@@ -9,15 +9,18 @@ import com.example.testbinlist.domain.CardInfo
 import com.example.testbinlist.domain.Country
 import com.example.testbinlist.domain.DataBaseRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 
 class DataBaseRepositoryImpl(private val database: BinListAppDatabase) : DataBaseRepository {
-    override suspend fun getHistory(): Flow<List<CardInfo>> = flow {
-        val data = mutableListOf<CardInfo>()
-        database.cardDao().getAll().map { cardDb ->
-            val bankDb = database.bankDao().findBankByName(cardDb.bankName)
-            val countryDb = database.countryDao().findCountryByName(cardDb.countryName)
-            data.add(cardDb.toCardInfo(bankDb ?: BankDb("", "", "", ""), countryDb))
+    override fun getHistory(): Flow<List<CardInfo>> = flow {
+        val cards = database.cardDao().getAll()
+        val bankMap = database.bankDao().getAll().first().associateBy { it.name }
+        val countryMap = database.countryDao().getAll().first().associateBy { it.name }
+        val data = cards.map { cardDb ->
+            val bankDb = bankMap[cardDb.bankName] ?: BankDb("", "", "", "")
+            val countryDb = countryMap[cardDb.countryName] ?: CountryDb("", 0, 0)
+            cardDb.toCardInfo(bankDb, countryDb)
         }
         emit(data)
     }
