@@ -91,7 +91,7 @@ class MainActivity : ComponentActivity() {
                     NavHost(
                         navController, startDestination = "search", Modifier.padding(innerPadding)
                     ) {
-                        composable("search") { SearchScreen() }
+                        composable("search") { SearchScreen(viewModel = searchViewModel) }
                         composable("history") { HistoryScreen(triggerHistory = true) }
                     }
                 }
@@ -101,8 +101,4 @@ class MainActivity : ComponentActivity() {
 }
 
 
-@Preview
-@Composable
-private fun BankInfoCardPreview() {
-    SearchScreen()
-}
+

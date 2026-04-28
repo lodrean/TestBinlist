@@ -27,11 +27,8 @@ import androidx.compose.ui.unit.dp
 import com.example.testbinlist.domain.CardInfo
 import com.example.testbinlist.viewmodels.SearchViewModel
 import com.example.testbinlist.viewmodels.SearchViewState
-import org.koin.androidx.compose.koinViewModel
-
-
 @Composable
-fun SearchScreen(viewModel: SearchViewModel = koinViewModel<SearchViewModel>()) {
+fun SearchScreen(viewModel: SearchViewModel) {
     val onElementClickListener = OnElementClickListener { cardElement ->
         when (cardElement) {
             is CardElement.Site -> {
@@ -147,46 +144,3 @@ fun creditCardFilter(text: AnnotatedString): TransformedText {
 }
 
 
-@Preview
-@Composable
-fun SearchScreenPreview() {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 48.dp, bottom = 12.dp, start = 12.dp, end = 12.dp)
-            .padding(top = 48.dp, bottom = 12.dp, start = 12.dp, end = 12.dp)
-    ) {
-        val creditCardText = remember { mutableStateOf(TextFieldValue("")) }
-        val maxCharCreditCard = 8
-        // this for entering number only
-        val numberRegex = "^[0-9]+\$".toRegex()
-
-        OutlinedTextField(
-            isError = creditCardText.value.text.length < 6,
-            modifier = Modifier.width(300.dp),
-            value = creditCardText.value,
-            label = { Text("Номер карты") },
-            placeholder = { Text(text = "Введите от 6 до 8 знаков") },
-            onValueChange = { newValue ->
-                val text = newValue.text
-                if ((text.length <= maxCharCreditCard && numberRegex.matches(text)) or (text.isEmpty())) {
-                    creditCardText.value = newValue
-                }
-            },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            maxLines = 1,
-            visualTransformation = CreditCardVisualTransformation()
-        )
-        Button(modifier = Modifier.padding(
-            top = 12.dp,
-            bottom = 12.dp,
-            start = 12.dp,
-            end = 12.dp
-        ),
-            onClick = {},
-            content = { Text("Получить информацию") })
-        BankInfoCard(CardInfo(), onElementClickListener = OnElementClickListener { })
-    }
-
-}

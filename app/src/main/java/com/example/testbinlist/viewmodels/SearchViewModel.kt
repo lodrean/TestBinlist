@@ -36,9 +36,7 @@ class SearchViewModel(
 
         when (validation) {
             is BinValidator.ValidationResult.Error -> {
-                viewModelScope.launch {
-                    _snackbarEvent.send(validation.message)
-                }
+                _snackbarEvent.trySend(validation.message)
                 return
             }
             is BinValidator.ValidationResult.Success -> {
@@ -56,9 +54,7 @@ class SearchViewModel(
                         it.copy(cardInfo = currentCardInfo, errorMessage = null)
                     }
                 } else {
-                    viewModelScope.launch {
-                        _snackbarEvent.send(errorMessage ?: "Unknown error")
-                    }
+                    _snackbarEvent.trySend(errorMessage ?: "Unknown error")
                     _internalStorageFlow.update {
                         it.copy(cardInfo = CardInfo())
                     }
